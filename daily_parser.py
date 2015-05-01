@@ -127,7 +127,7 @@ def parse_gd_xml(game_tuple, scrape_date):
 
 
 def main():
-    for day in range(1, 2593):
+    for day in range(713, 2593):
         game_tuples = scrape_page(date.today()-timedelta(days=day))
         for game in game_tuples:
             parse_gd_xml(game, date.today()-timedelta(days=day))
