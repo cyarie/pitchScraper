@@ -49,7 +49,7 @@ def parse_gd_xml(game_tuple, scrape_date):
             os.mkdir(path)
 
         with open(os.path.join(path, "{0}_atbats.csv".format(game_tuple.name)), "w", newline="") as csv_file:
-            ab_headers = ['ab_id', 'batter', 'pitcher', 'ab_des']
+            ab_headers = ['ab_id', 'batter', 'pitcher', 'ab_des', 'game_id']
             writer = csv.DictWriter(csv_file, fieldnames=ab_headers)
             writer.writeheader()
             for inning in game:
@@ -62,14 +62,15 @@ def parse_gd_xml(game_tuple, scrape_date):
                             writer.writerow({"ab_id": int(ab_dict["num"]),
                                              "batter": int(ab_dict["batter"]),
                                              "pitcher": int(ab_dict["pitcher"]),
-                                             "ab_des": str(ab_dict["des"])})
+                                             "ab_des": str(ab_dict["des"]),
+                                             "game_id": str(game_tuple.name)})
 
         with open(os.path.join(path, "{0}_pitches.csv".format(game_tuple.name)), "w", newline="") as csv_file:
             pitch_headers = ['end_speed', 'pfx_x', 'px', 'sz_bot', 'ay', 'vy0', 'break_angle', 'z0', 'ax', 'y',
                              'type', 'sv_id', 'spin_rate', 'mt', 'type_confidence', 'y0', 'des', 'vx0', 'break_y',
                              'az', 'sz_top', 'ab_id', 'spin_dir', 'zone', 'start_speed', 'pz', 'tfs', 'x0', 'vz0',
                              'tfs_zulu', 'event_num', 'break_length', 'play_guid', 'x', 'cc', 'nasty', 'id',
-                             'pitch_type', 'pfx_z']
+                             'pitch_type', 'pfx_z', 'game_id']
             writer = csv.DictWriter(csv_file, fieldnames=pitch_headers)
             writer.writeheader()
             for inning in game:
@@ -119,7 +120,8 @@ def parse_gd_xml(game_tuple, scrape_date):
                                                      "nasty": int(pitch_dict["nasty"]),
                                                      "id": int(pitch_dict["id"]),
                                                      "pitch_type": pitch_dict["pitch_type"],
-                                                     "pfx_z": float(pitch_dict["pfx_z"])})
+                                                     "pfx_z": float(pitch_dict["pfx_z"]),
+                                                     "game_id": str(game_tuple.name)})
                                 except KeyError:
                                     pass
                             else:
@@ -127,7 +129,7 @@ def parse_gd_xml(game_tuple, scrape_date):
 
 
 def main():
-    for day in range(1, 15):
+    for day in range(1, 2062):
         game_tuples = scrape_page(date.today()-timedelta(days=day))
         for game in game_tuples:
             parse_gd_xml(game, date.today()-timedelta(days=day))
