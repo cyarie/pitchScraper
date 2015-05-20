@@ -59,8 +59,6 @@ def build_db():
                             for field in fields:
                                 data_list.append(row[field].replace('"', ''))
                             print(data_list)
-                            data_list.append(game.split(".")[0].replace("_atbats", ""))
-                            print(data_list)
                             cursor.execute("""
                             INSERT INTO pitch_data.at_bats (ab_id, batter, pitcher, ab_des, game_id)
                                 VALUES (%s, %s, %s, %s, %s);""", data_list)
