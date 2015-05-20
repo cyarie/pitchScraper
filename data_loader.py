@@ -25,7 +25,7 @@ def db_connect():
 
 
 def build_db():
-    games_dir = "/Users/chrisyarie/PycharmProjects/gamedayTracker/game_logs"
+    games_dir = "/home/tweets-deploy/pitchScraper/game_logs"
     games_gen = os.walk(games_dir)
 
     # Let's make a named tuple to pair up our game logs with the directories they belong to!
