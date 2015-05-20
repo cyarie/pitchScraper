@@ -73,6 +73,7 @@ def build_db():
                             for x in range(0, len(data_list)):
                                 if data_list[x] == '':
                                     data_list[x] = None
+                            print(data_list)
                             data_list.append(game.split(".")[0].replace("_pitches", ""))
                             print(data_list)
                             cursor.execute("""
@@ -81,12 +82,9 @@ def build_db():
                                 az, sz_top, ab_id, spin_dir, zone, start_speed, pz, tfs, x0, vz0, tfs_zulu,
                                 event_num, break_length, play_guid, x, cc, nasty, id, pitch_type, pfx_z,
                                 game_id) VALUES
-                                (%(end_speed)s, %(pfx_x)s, %(px)s, %(sz_bot)s, %(ay)s, %(vy0)s, %(break_angle)s, %(z0)s,
-                                %(ax)s, %(y)s, %(type)s, %(sv_id)s, %(spin_rate)s, %(mt)s, %(type_confidence)s, %(y0)s,
-                                %(des)s, %(vx0)s, %(break_y)s, %(az)s, %(sz_top)s, %(ab_id)s, %(spin_dir)s, %(zone)s,
-                                %(start_speed)s, %(pz)s, %(tfs)s, %(x0)s, %(vz0)s, %(tfs_zulu)s, %(event_num)s,
-                                %(break_length)s, %(play_guid)s, %(x)s, %(cc)s, %(nasty)s, %(id)s, %(pitch_type)s,
-                                %(pfx_z)s, %(game_id)s);""", row)
+                                (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
+                                    %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
+                                    %s, %s, %s);""", data_list)
                             print("Loaded pitch")
                             db_conn.commit()
                     db_conn.close()
