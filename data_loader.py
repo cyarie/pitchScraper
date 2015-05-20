@@ -58,7 +58,6 @@ def build_db():
                             data_list = list()
                             for field in fields:
                                 data_list.append(row[field].replace('"', ''))
-                            data_list.append(game.split(".")[0].replace("_atbats", ""))
                             cursor.execute("""
                             INSERT INTO pitch_data.at_bats (ab_id, batter, pitcher, ab_des, game_id)
                                 VALUES (%s, %s, %s, %s, %s);""", data_list)
@@ -73,8 +72,6 @@ def build_db():
                             for x in range(0, len(data_list)):
                                 if data_list[x] == '':
                                     data_list[x] = None
-                            print(data_list)
-                            data_list.append(game.split(".")[0].replace("_pitches", ""))
                             print(data_list)
                             cursor.execute("""
                             INSERT INTO pitch_data.pitches (end_speed, pfx_x, px, sz_bot, ay, vy0, break_angle,
