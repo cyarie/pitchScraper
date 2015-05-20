@@ -25,7 +25,7 @@ def db_connect():
 
 
 def build_db():
-    games_dir = "/home/tweets-deploy/pitchScraper/game_logs"
+    games_dir = "/Users/chrisyarie/PycharmProjects/gamedayTracker/game_logs"
     games_gen = os.walk(games_dir)
 
     # Let's make a named tuple to pair up our game logs with the directories they belong to!
@@ -42,13 +42,16 @@ def build_db():
             log_dir = game_iterator[0]
             game_list = game_iterator[2]
             for game in game_list:
+                print("Processing {}".format(game))
                 game_tuple = GameTuple(directory=log_dir, game_id=game)
                 log_path = os.path.join(game_tuple.directory, game_tuple.game_id)
                 with open(log_path, "r", newline="") as log_input:
+                    print("Opening {}".format(log_path))
                     db_conn = db_connect()
                     cursor = db_conn.cursor()
                     log_reader = csv.DictReader(log_input)
                     for row in log_reader:
+                        print(row)
                         if game.split("_")[len(game.split("_")) - 1].split(".")[0] == "atbats":
                             fields = log_reader.fieldnames
                             data_list = list()
@@ -58,6 +61,7 @@ def build_db():
                             cursor.execute("""
                             INSERT INTO pitch_data.at_bats (ab_id, batter, pitcher, ab_des, game_id)
                                 VALUES (%s, %s, %s, %s, %s);""", data_list)
+                            print("Loaded at-bat")
                             db_conn.commit()
                         elif game.split("_")[len(game.split("_")) - 1].split(".")[0] == "pitches":
                             fields = log_reader.fieldnames
@@ -77,6 +81,7 @@ def build_db():
                                 (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
                                     %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
                                     %s, %s, %s);""", data_list)
+                            print("Loaded pitch")
                             db_conn.commit()
                     db_conn.close()
                 print("Finished {}".format(game))
