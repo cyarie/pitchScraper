@@ -25,7 +25,7 @@ def db_connect():
 
 
 def build_db():
-    games_dir = "/Users/chrisyarie/PycharmProjects/gamedayTracker/game_logs"
+    games_dir = "/home/tweets-deploy/pitchScraper/game_logs"
     games_gen = os.walk(games_dir)
 
     # Let's make a named tuple to pair up our game logs with the directories they belong to!
@@ -78,8 +78,8 @@ def build_db():
                                     %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
                                     %s, %s, %s);""", data_list)
                             db_conn.commit()
-                            print("INSERTED: {}".format(game.split(".")[0].replace("_pitches", "")))
                     db_conn.close()
+                print("Finished {}".format(game))
 
         except StopIteration:
             print("Finished iterating.")
@@ -113,9 +113,8 @@ def main():
     else:
         parser.print_help()
     """
-    format_game()
+    build_db()
 
 
 if __name__ == "__main__":
     main()
-
