@@ -74,6 +74,9 @@ def build_db():
                             if row["vz0"] == '':
                                 row["vz0"] = 0.0
 
+                            if row["tfs"] == '':
+                                row["tfs"] = 0
+
                             cursor.execute("""
                             INSERT INTO pitch_data.pitches (end_speed, pfx_x, px, sz_bot, ay, vy0, break_angle,
                                 z0, ax, y, type, sv_id, spin_rate, mt, type_confidence, y0, des, vx0, break_y,

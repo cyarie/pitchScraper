@@ -37,7 +37,7 @@ def scrape_page(scrape_date):
 
 def parse_gd_xml(game_tuple, scrape_date):
     r = requests.get(game_tuple.link)
-    print(r.status_code)
+    print("Scraping: {0}, status code: {1}".format(game_tuple.name, r.status_code))
     if r.status_code != 404:
         today_date = scrape_date.strftime("%Y_%m_%d")
         xml_str = r.text.encode("utf-8", "replace")
@@ -59,6 +59,7 @@ def parse_gd_xml(game_tuple, scrape_date):
                             ab_dict = collections.defaultdict()
                             for key in atbat.keys():
                                 ab_dict[key] = atbat.get(key)
+                            print("AB dict for {0}: {1}".format(game_tuple.name, ab_dict))
                             writer.writerow({"ab_id": int(ab_dict["num"]),
                                              "batter": int(ab_dict["batter"]),
                                              "pitcher": int(ab_dict["pitcher"]),
@@ -83,6 +84,7 @@ def parse_gd_xml(game_tuple, scrape_date):
                                 for key in pitch.keys():
                                     pitch_dict[key] = pitch.get(key)
                                 try:
+                                    print("Pitch dict for {0}: {1}".format(game_tuple.name, pitch_dict))
                                     writer.writerow({"ab_id": int(ab_id),
                                                      "play_guid": pitch_dict["play_guid"],
                                                      "start_speed": float(pitch_dict["start_speed"]),
