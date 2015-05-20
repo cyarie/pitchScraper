@@ -54,35 +54,38 @@ def build_db():
                         print(row)
                         if game.split("_")[len(game.split("_")) - 1].split(".")[0] == "atbats":
                             print("Doing atbats")
-                            fields = log_reader.fieldnames
-                            data_list = list()
-                            for field in fields:
-                                data_list.append(row[field].replace('"', ''))
-                            print(data_list)
                             cursor.execute("""
                             INSERT INTO pitch_data.at_bats (ab_id, batter, pitcher, ab_des, game_id)
-                                VALUES (%s, %s, %s, %s, %s);""", data_list)
+                                VALUES (%(ab_id)s, %(batter)s, %(pitcher)s, %(ab_des)s, %(game_id)s);""", row)
                             print("Loaded at-bat")
                             db_conn.commit()
                         elif game.split("_")[len(game.split("_")) - 1].split(".")[0] == "pitches":
                             print("Doing pitches")
-                            fields = log_reader.fieldnames
-                            data_list = list()
-                            for field in fields:
-                                data_list.append(row[field].replace('"', ''))
-                            for x in range(0, len(data_list)):
-                                if data_list[x] == '':
-                                    data_list[x] = None
-                            print(data_list)
+
+                            if row["cc"] == '':
+                                row["cc"] = None
+
+                            if row["mt"] == '':
+                                row["mt"] = None
+
+                            if row["play_guid"] == '':
+                                row["play_guid"] = None
+
+                            if row["vz0"] == '':
+                                row["vz0"] = 0.0
+
                             cursor.execute("""
                             INSERT INTO pitch_data.pitches (end_speed, pfx_x, px, sz_bot, ay, vy0, break_angle,
                                 z0, ax, y, type, sv_id, spin_rate, mt, type_confidence, y0, des, vx0, break_y,
                                 az, sz_top, ab_id, spin_dir, zone, start_speed, pz, tfs, x0, vz0, tfs_zulu,
                                 event_num, break_length, play_guid, x, cc, nasty, id, pitch_type, pfx_z,
                                 game_id) VALUES
-                                (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
-                                    %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
-                                    %s, %s, %s);""", data_list)
+                                (%(end_speed)s, %(pfx_x)s, %(px)s, %(sz_bot)s, %(ay)s, %(vy0)s, %(break_angle)s, %(z0)s,
+                                %(ax)s, %(y)s, %(type)s, %(sv_id)s, %(spin_rate)s, %(mt)s, %(type_confidence)s, %(y0)s,
+                                %(des)s, %(vx0)s, %(break_y)s, %(az)s, %(sz_top)s, %(ab_id)s, %(spin_dir)s, %(zone)s,
+                                %(start_speed)s, %(pz)s, %(tfs)s, %(x0)s, %(vz0)s, %(tfs_zulu)s, %(event_num)s,
+                                %(break_length)s, %(play_guid)s, %(x)s, %(cc)s, %(nasty)s, %(id)s, %(pitch_type)s,
+                                %(pfx_z)s, %(game_id)s);""", row)
                             print("Loaded pitch")
                             db_conn.commit()
                     db_conn.close()
