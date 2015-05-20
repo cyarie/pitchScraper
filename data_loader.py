@@ -53,6 +53,7 @@ def build_db():
                     for row in log_reader:
                         print(row)
                         if game.split("_")[len(game.split("_")) - 1].split(".")[0] == "atbats":
+                            print("Doing atbats")
                             fields = log_reader.fieldnames
                             data_list = list()
                             for field in fields:
@@ -64,6 +65,7 @@ def build_db():
                             print("Loaded at-bat")
                             db_conn.commit()
                         elif game.split("_")[len(game.split("_")) - 1].split(".")[0] == "pitches":
+                            print("Doing pitches")
                             fields = log_reader.fieldnames
                             data_list = list()
                             for field in fields:
