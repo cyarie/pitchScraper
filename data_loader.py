@@ -74,6 +74,7 @@ def build_db():
                                 if data_list[x] == '':
                                     data_list[x] = None
                             data_list.append(game.split(".")[0].replace("_pitches", ""))
+                            print(data_list)
                             cursor.execute("""
                             INSERT INTO pitch_data.pitches (end_speed, pfx_x, px, sz_bot, ay, vy0, break_angle,
                                 z0, ax, y, type, sv_id, spin_rate, mt, type_confidence, y0, des, vx0, break_y,
