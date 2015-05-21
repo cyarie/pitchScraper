@@ -62,9 +62,11 @@ def build_db():
                         elif game.split("_")[len(game.split("_")) - 1].split(".")[0] == "pitches":
                             print("Doing pitches")
 
-                            for key in row.items():
+                            for key, value in row.items():
                                 if row[key] == '':
                                     row[key] = None
+                                else:
+                                    row[key] = value
 
                             cursor.execute("""
                             INSERT INTO pitch_data.pitches (end_speed, pfx_x, px, sz_bot, ay, vy0, break_angle,
